@@ -1,0 +1,1 @@
+#Arxiu exercici012.py

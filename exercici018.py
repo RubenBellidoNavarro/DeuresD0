@@ -1,0 +1,1 @@
+#Arxiu exercici018.py

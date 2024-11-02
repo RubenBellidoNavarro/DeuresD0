@@ -27,7 +27,7 @@ def main():
         app_run()
         app_draw()
 
-    pygame.exit()
+    pygame.quit()
     sys.exit()
 
 def app_events():

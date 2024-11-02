@@ -41,7 +41,6 @@ def app_run():
     pass
 
 def app_draw():
-    pass
     screen.fill(WHITE)
     utils.draw_grid(pygame, screen, 50)
 

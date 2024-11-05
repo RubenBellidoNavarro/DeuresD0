@@ -73,24 +73,31 @@ def app_run():
 
     dx = car['direction_x']
     dy = car['direction_y']
-
     if dx == 'right':
         car['x'] += displacement
     elif dx == 'left':
         car['x'] -= displacement
-
     if dy == 'up':
         car['y'] -= displacement
     elif dy == 'down':
         car['y'] += displacement
 
     if dx == 'right' and dy == 'none':
-        car['angle'] = 0
+        car['angle'] = 270
     elif dx == 'right' and dy == 'up':
-        car['angle'] = 45
+        car['angle'] = 315
     elif dx == 'none' and dy == 'up':
-        car['angle'] = 90
+        car['angle'] = 0
     elif dx == 'left' and dy == 'up':
+        car['angle'] = 45
+    elif dx == 'left' and dy == 'none':
+        car['angle'] = 90
+    elif dx == 'left' and dy == 'down':
+        car['angle'] = 135
+    elif dx == 'none' and dy == 'down':
+        car['angle'] = 180
+    elif dx == 'right' and dy == 'down':
+        car['angle'] = 225
 
 def app_draw():
     screen.blit(img_circuit, (0,0))

@@ -42,13 +42,13 @@ def app_draw():
     center = {'x':300, 'y':250}
     radi_petit = 25
     radi_gran = 150
-    for angle in range(0, 361, 15):
+    for angle_deg in range(0, 361, 15):
         # Pasar ángulo a radianes
-        angle = (angle / 360) * (2 * math.pi)
+        angle_rad = (angle_deg / 360) * (2 * math.pi)
         # Calcular componentes x e y del punto por trigonometría
-        punt_radi_petit = {'x':math.cos(angle) * radi_petit, 'y':math.sin(angle) * radi_petit}
-        #punt_radi_gran = utils.point_on_circle(center, radi_gran, angle)
-        #pygame.draw.line(screen, BLACK, tuple(punt_radi_petit.values()), tuple(punt_radi_gran.values()), 5)
+        punt_radi_petit = {'x': center['x'] + math.cos(angle_rad) * radi_petit, 'y': center['y'] + math.sin(angle_rad) * radi_petit}
+        punt_radi_gran = utils.point_on_circle(center, radi_gran, angle_deg)
+        pygame.draw.line(screen, BLACK, tuple(punt_radi_petit.values()), tuple(punt_radi_gran.values()), 4)
 
     pygame.display.update()
 

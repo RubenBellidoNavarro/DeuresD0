@@ -34,6 +34,7 @@ mouse_pos = {
 }
 
 font = pygame.font.SysFont('Arial', 20)
+mouse_pressed = False
 
 def main():
     is_looping = True
@@ -61,7 +62,7 @@ def main():
     sys.exit()
 
 def app_events():
-    global mouse_pos
+    global mouse_pos, mouse_pressed
     mouse_inside = pygame.mouse.get_focused()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -73,10 +74,25 @@ def app_events():
             else:
                 mouse_pos['x'] = -1
                 mouse_pos['y'] = -1
+        elif event.type == pygame.MOUSEBUTTONUP:
+            mouse_pressed = True
     return True
 
 def app_run():
-    pass
+    global mouse_pressed
+    mouse_sobre_numero = tuple(cell_from_point(mouse_pos, board).values()) != (-1,-1)
+    if mouse_pressed and mouse_sobre_numero:
+        celda = cell_from_point(mouse_pos, board)
+        i = celda['i']
+        j = celda['j']
+        n_rows = board['size']['rows']
+        n_cols = board['size']['cols']
+        n = get_cell_value(celda)
+        for i in range(n_rows):
+            for j in range(n_cols):
+                if graella[i][j] == n:
+                    graella[i][j] = -1
+        mouse_pressed = False
 
 def app_draw():
     screen.fill(WHITE)
@@ -85,15 +101,16 @@ def app_draw():
     celda = cell_from_point(mouse_pos, board)
     if tuple(celda.values()) != (-1, -1):
         n = get_cell_value(celda)
-        n_rows = board['size']['rows']
-        n_cols = board['size']['cols']
-        for i in range(n_rows):
-            for j in range(n_cols):
-                if graella[i][j] == n:
-                    celda = {'i': i, 'j': j}
-                    pos_rect = point_from_cell(celda, board)
-                    rect_values = (pos_rect['x'], pos_rect['y'], board['cell_size'], board['cell_size'])
-                    pygame.draw.rect(screen, YELLOW, rect_values)
+        if n != -1:
+            n_rows = board['size']['rows']
+            n_cols = board['size']['cols']
+            for i in range(n_rows):
+                for j in range(n_cols):
+                    if graella[i][j] == n:
+                        celda = {'i': i, 'j': j}
+                        pos_rect = point_from_cell(celda, board)
+                        rect_values = (pos_rect['x'], pos_rect['y'], board['cell_size'], board['cell_size'])
+                        pygame.draw.rect(screen, YELLOW, rect_values)
 
     # Dibujamos el tablero
     draw_board(board)
@@ -162,6 +179,9 @@ def draw_board_values():
     for i in range(n_rows):
         for j in range(n_cols):
             n = graella[i][j]
+            if n == -1:
+                x += board['cell_size']
+                continue
             n_text = font.render(str(n), True, BLACK)
             screen.blit(n_text, (x, y))
             x += board['cell_size']

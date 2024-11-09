@@ -81,15 +81,22 @@ def app_run():
 def app_draw():
     screen.fill(WHITE)
 
-    # Dibujamos el tablero
-    draw_board(board)
-
-    # Si el ratón está sobre una celda, dibujamos un rectángulo
+    # Si el ratón está sobre un número (celda), dibujamos un rectángulo en todos los números iguales
     celda = cell_from_point(mouse_pos, board)
     if tuple(celda.values()) != (-1, -1):
-        posicion = point_from_cell(celda, board)
-        rect_values = (posicion['y'], posicion['x'], board['cell_size'], board['cell_size'])
-        pygame.draw.rect(screen, YELLOW, rect_values)
+        n = get_cell_value(celda)
+        n_rows = board['size']['rows']
+        n_cols = board['size']['cols']
+        for i in range(n_rows):
+            for j in range(n_cols):
+                if graella[i][j] == n:
+                    celda = {'i': i, 'j': j}
+                    pos_rect = point_from_cell(celda, board)
+                    rect_values = (pos_rect['x'], pos_rect['y'], board['cell_size'], board['cell_size'])
+                    pygame.draw.rect(screen, YELLOW, rect_values)
+
+    # Dibujamos el tablero
+    draw_board(board)
 
     # Dibujamos números
     draw_board_values()
@@ -136,8 +143,8 @@ def point_from_cell(cell, board):
     for i, row in enumerate(range(n_rows)):
         for j, col in enumerate(range(n_cols)):
             if i == cell['i'] and j == cell['j']:
-                x = x_inicial + i * board['cell_size']
-                y = y_inicial + j * board['cell_size']
+                x = x_inicial + j * board['cell_size']
+                y = y_inicial + i * board['cell_size']
                 return {'x': x, 'y': y}
     return {'x': -1, 'y': -1}
 
